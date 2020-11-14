@@ -1,12 +1,12 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM registry.cn-hangzhou.aliyuncs.com/yoyosoft/dotnet/core/aspnet:3.1 AS base
+FROM  mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 RUN sed -i 's/TLSv1.2/TLSv1.0/g' /etc/ssl/openssl.cnf
 
 WORKDIR /app
 EXPOSE 80
 
-FROM registry.cn-hangzhou.aliyuncs.com/yoyosoft/dotnet/core/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["YoyoMooc.StuManagement.Api/YoyoMooc.StuManagement.Api.csproj", "YoyoMooc.StuManagement.Api/"]
 COPY ["YoyoMooc.StuManagement.Models/YoyoMooc.StuManagement.Models.csproj", "YoyoMooc.StuManagement.Models/"]
