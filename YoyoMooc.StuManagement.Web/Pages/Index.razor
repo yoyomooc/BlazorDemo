@@ -1,0 +1,114 @@
+@page "/"
+@using System.Runtime.InteropServices
+@using System
+@using System.IO
+@using System.Diagnostics
+
+@inherits IndexBase
+
+@{
+    var process = Process.GetCurrentProcess();
+
+    var DOTNET_RUNNING_IN_CONTAINER = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") is object;
+
+    
+}
+
+
+
+<h3 class="display-4 text-center">欢迎</h3>
+
+<h4 class="bg-success text-xs-center p-1 text-white"> 来到 中国DevOps大会● 成都站 《ASP.NET Core Blazor 实践DevOps全流程分享》 </h4>
+
+
+<p>源代码: <a href="http://code.52abp.com/yoyomooc/blazordemo/">创建第一个 ASP.NET Core Blazor项目</a>.</p>
+
+
+
+
+
+<div class="m-1 p-1">
+
+    <h4 class="bg-info text-xs-center p-1 text-white">当前应用程序系统运行环境</h4>
+
+    <table width="500" align="center" class="table table-sm  table-striped table-hover">
+
+        <tr>
+            <td>容器化运行</td>
+            <td>@(DOTNET_RUNNING_IN_CONTAINER ? "是" : "不是")</td>
+        </tr>
+        <tr>
+            <td>容器ID</td>
+
+            <td>@(DOTNET_RUNNING_IN_CONTAINER ? Hostname : "无容器ID")</td>
+        </tr>
+        <tr>
+            <td>CPU核心数量</td>
+            <td>@Environment.ProcessorCount</td>
+        </tr>
+        @if (RuntimeInformation.OSDescription.StartsWith("Linux") && Directory.Exists("/sys/fs/cgroup/memory"))
+        {
+            <tr>
+                <td>cgroup内存使用情况</td>
+                <td>@System.IO.File.ReadAllLines("/sys/fs/cgroup/memory/memory.usage_in_bytes")[0]</td>
+            </tr>
+        }
+        <tr>
+            <td>当前占用物理内存空间(MB)</td>
+            <td>@(process.WorkingSet64/1024/1024)</td>
+        </tr>
+        <tr>
+            <td>.NET 版本</td>
+            <td>@Environment.Version.ToString()</td>
+        </tr>
+
+        <tr>
+            <td>Runtime目录信息</td>
+            <td>@RuntimeEnvironment.GetRuntimeDirectory()</td>
+        </tr>
+        <tr>
+            <td>服务器名称</td>
+            <td>@Environment.UserDomainName.ToString()</td>
+        </tr>
+        
+    </table>
+</div>
+
+
+
+
+
+
+<h5 class="text-dark">流水线信息</h5>
+
+ 
+<ul>
+    <li>
+        华为云DevCloud 流水线触发：
+        <a href="https://devcloud.cn-east-3.huaweicloud.com/pipeline/project/1206d9c5371a4b6bbd51dcb2f747b5d4/pipeline/home">华为云DevCloud</a>
+
+    </li>
+    <li>
+
+        网站采用ASP.NET Core
+        <a href="https://docs.microsoft.com/zh-cn/aspnet/core/blazor/?view=aspnetcore-3.1">Blazor</a>
+
+        开发完成
+    </li>
+
+
+
+    <li>
+        源代码：
+        <a href="https://github.com/yoyomooc/BlazorDemo">https://github.com/yoyomooc/BlazorDemo</a>
+
+
+    </li>
+
+    <li>负载均衡的地址：<a href="http://23.97.69.94:3055">http://23.97.69.94:3055</a> </li>
+    <li>webapi地址： <a href="http://23.97.69.94:3001/api/student">http://23.97.69.94:3001/api/student</a></li>
+     <li> 监控信息：<a href="http://23.97.69.94:1936">http://23.97.69.94:1936</a> </li>
+   
+
+ 
+</ul>

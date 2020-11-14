@@ -59,7 +59,7 @@ namespace YoyoMooc.StuManagement.Web.Pages
 
 
 
-            navigation.NavigateTo("/");
+            navigation.NavigateTo("/student");
 
 
         }

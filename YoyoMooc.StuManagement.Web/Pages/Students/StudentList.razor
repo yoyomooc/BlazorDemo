@@ -1,93 +1,18 @@
-@page "/"
+@page "/student"
 @inherits StudentListBase
 @using System.Runtime.InteropServices
 @using System
 @using System.IO
 @using System.Diagnostics
 
-@{
-    var process = Process.GetCurrentProcess();
-
-}
-    <h2>冠骋信息 2020年10月30日21:19:53</h2>
 
 
-    <h5 class="text-dark">尝试触发流水线</h5>
-
-<h3>容器Id：@Hostname</h3>
-
-<h4>
-  <ul><li>
- 采用华为云DevCloud 流水线触发：
-    <a href="https://devcloud.cn-east-3.huaweicloud.com/pipeline/project/1206d9c5371a4b6bbd51dcb2f747b5d4/pipeline/home">华为云DevCloud</a>
-   
-  </li>
-  <li>
-
-  网站Demo采用ASP.NET Core 3.1
-    <a href="https://docs.microsoft.com/zh-cn/aspnet/core/blazor/?view=aspnetcore-3.1">Blazor</a>
-
-    开发完成
-  </li>
-  </ul>  
-       
-  
-</h4>
-
-<ul>
-    <li>整个网站没有包含一行javascript和ts文件</li>
-    <li>Angular、Vue、React 的SSO问题，Blazor 解决了</li>
-    <li>前端项目编译Angular、Vue、React慢的问题，Blazor解决了</li>
-    <li>传统MVC、RazorPage在Ajax上需要通过js进行Dom操作的问题，被Blazor解决了双向绑定问题解决了，优秀。</li>
-
-    <li>Demo源代码：
-    
-    <a href="https://github.com/yoyomooc/BlazorDemo">https://github.com/yoyomooc/BlazorDemo</a> 
-    
-    
-    </li>
-
-</ul>
-
-
-<div class="m-1 p-1">
-
-    <h4 class="bg-info text-xs-center p-1 text-white">当前应用程序运行信息</h4>
-
-    <table width="500" align="center" class="table table-sm  table-striped table-hover">
-        <tr>
-            <td>容器化运行</td>
-            <td>@(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") is object ? "是" : "不是")</td>
-        </tr>
-        <tr>
-            <td>CPU核心</td>
-            <td>@Environment.ProcessorCount</td>
-        </tr>
-        @if (RuntimeInformation.OSDescription.StartsWith("Linux") && Directory.Exists("/sys/fs/cgroup/memory"))
-        {
-            <tr>
-                <td>cgroup内存使用情况</td>
-                <td>@System.IO.File.ReadAllLines("/sys/fs/cgroup/memory/memory.usage_in_bytes")[0]</td>
-            </tr>
-        }
-        <tr>
-            <td>当前占用物理内存空间(MB)</td>
-            <td>@(process.WorkingSet64/1024/1024)</td>
-        </tr>
-        
-
-    </table>
-</div>
-
-
-
-
-
+<h5 class="text-dark">学生信息列表</h5>
 
 <h4>
     <a href="/student/add">添加学生信息</a>
 
-    <a href="#" @onclick="@AddBatchStudents">添加10个学生</a>
+    <a href="/student" @onclick="@AddBatchStudents">添加10个学生</a>
 </h4>
 
 
@@ -130,7 +55,7 @@ else
 
 
                     <span id="deleteSpan_@student.StudentId">
-                        <a href="#" class="btn btn-danger"
+                        <a href="/student" class="btn btn-danger"
                            @onclick="@(()=>ConfirmDelete(student, true))">删除</a>
                     </span>
 

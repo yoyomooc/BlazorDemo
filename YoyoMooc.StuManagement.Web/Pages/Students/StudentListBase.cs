@@ -19,18 +19,12 @@ namespace YoyoMooc.StuManagement.Web.Pages
         [Parameter]
         public List<Student> Students { get; set; }
 
-        [Inject]
-        private IConfiguration Config { get; set; }
-
-        public string Hostname { get; set; }
-
-
+      
 
         protected override async Task OnInitializedAsync()
         {
 
-            Hostname = Config["HOSTNAME"];
-
+           
             Students = (await _studentService.GetStudents()).ToList();
         }
 
