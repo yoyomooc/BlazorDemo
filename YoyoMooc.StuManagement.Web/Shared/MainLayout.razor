@@ -5,9 +5,17 @@
 </div>
 
 <div class="main">
-   
+
 
     <div class="content px-4 container">
         @Body
     </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            © @DateTime.Now.Year <a href="https://www.52abp.com/" class="text-primary" target="_blank">52ABP.com</a> -  Powered by .NET @Environment.Version.ToString()
+
+           
+        </div>
+    </footer>
 </div>
