@@ -1,0 +1,11 @@
+
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+			<p>对不起，这个地址什么也没有。</p>
+        </LayoutView>
+    </NotFound>
+</Router>

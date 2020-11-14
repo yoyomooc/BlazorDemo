@@ -1,0 +1,33 @@
+@page "/chatmessage"
+@inherits ChatMessageBase
+
+    <h3>这是一个聊天室Demo</h3>
+
+<h4>开两个地址栏，输入不同的用户名，发送的信息即可跨浏览器页面收到实时聊天功能</h4>
+
+<div class="form-group">
+    <label for="my-input">用户名:</label>
+    <input id="my-input" class="form-control" type="text" @bind="_userInput" placeholder="请输入用户名" aria-label="请输入用户名">
+</div>
+
+<div class="form-group">
+    <label for="my-textarea">Text</label>
+    <textarea id="my-textarea" class="form-control" laceholder="请输入你要发送的信息" @bind="_messageInput" rows="5"></textarea>
+</div>
+
+<button class="btn btn-primary" type="button" @onclick="Send" disabled="@(!IsConnected)">发送</button>
+
+<hr>
+
+<div class="border-info border">
+
+    <p>聊天记录</p>
+
+    <ul id="messagesList" class="mt-5">
+
+        @foreach (var message in _messages)
+        {
+            <li>@message</li>
+        }
+    </ul>
+</div>

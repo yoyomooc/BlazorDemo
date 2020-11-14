@@ -1,0 +1,29 @@
+@page "/example/exampleform"
+
+<h3>案例表单验证功能</h3>
+
+<div class="row">
+	<div class="col-md-6">
+
+		<EditForm Model="@_exampleModel" OnValidSubmit="HandleValidSubmit">
+			<DataAnnotationsValidator />
+			<ValidationSummary />
+
+			<div class="form-group">
+				<label for="StudentName" class="control-label">学生姓名</label>
+				<InputText id="name" class="form-control" @bind-Value="_exampleModel.Name" />
+			</div>
+
+			<button type="submit">Submit</button>
+		</EditForm>
+	</div>
+</div>
+
+@code {
+	private ExampleModel _exampleModel = new ExampleModel();
+
+	private void HandleValidSubmit()
+	{
+		Console.WriteLine("OnValidSubmit");
+	}
+}

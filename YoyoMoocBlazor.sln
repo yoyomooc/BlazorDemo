@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoyoMooc.StuManagement.Models", "YoyoMooc.StuManagement.Models\YoyoMooc.StuManagement.Models.csproj", "{AB92BA18-B5F2-456E-ACD4-D63F81FC679E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoyoMooc.StuManagement.Web", "YoyoMooc.StuManagement.Web\YoyoMooc.StuManagement.Web.csproj", "{142FBC8C-76A9-4349-99BB-7EDC58C00BE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoyoMooc.StuManagement.Api", "YoyoMooc.StuManagement.Api\YoyoMooc.StuManagement.Api.csproj", "{B33490AB-4BD5-423C-98D3-62C3ECB49008}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{33F1155D-8DE2-4678-9382-51D7527FE74E}"
+	ProjectSection(SolutionItems) = preProject
+		build.md = build.md
+		docker-compose.yml = docker-compose.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB92BA18-B5F2-456E-ACD4-D63F81FC679E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB92BA18-B5F2-456E-ACD4-D63F81FC679E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB92BA18-B5F2-456E-ACD4-D63F81FC679E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB92BA18-B5F2-456E-ACD4-D63F81FC679E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{142FBC8C-76A9-4349-99BB-7EDC58C00BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{142FBC8C-76A9-4349-99BB-7EDC58C00BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{142FBC8C-76A9-4349-99BB-7EDC58C00BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{142FBC8C-76A9-4349-99BB-7EDC58C00BE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B33490AB-4BD5-423C-98D3-62C3ECB49008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B33490AB-4BD5-423C-98D3-62C3ECB49008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B33490AB-4BD5-423C-98D3-62C3ECB49008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B33490AB-4BD5-423C-98D3-62C3ECB49008}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98598907-3F6F-47BF-A615-E8BDEC278C2A}
+	EndGlobalSection
+EndGlobal

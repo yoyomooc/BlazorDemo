@@ -1,0 +1,75 @@
+@page "/example/formsValidation"
+
+<h1>星际舰队星舰数据库</h1>
+
+<h2>新的船舶报名表</h2>
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="@_starship">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label class="control-label">
+                    识别码:
+                </label>
+                <InputText class="form-control" @bind-Value="_starship.Identifier" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    描述内容 (选填):
+                </label>
+                <InputTextArea class="form-control" @bind-Value="_starship.Description" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    选择分类:
+                </label>
+                <InputSelect class="form-control" @bind-Value="_starship.Classification">
+                    <option value="">Select classification ...</option>
+                    <option value="Exploration">Exploration</option>
+                    <option value="Diplomacy">Diplomacy</option>
+                    <option value="Defense">Defense</option>
+                </InputSelect>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <label class="control-label">
+                    Maximum Accommodation:
+                </label>
+                <InputNumber class="form-control" @bind-Value="_starship.MaximumAccommodation" />
+            </div>
+            <div class="custom-control custom-checkbox">
+                <label class="custom-control-label" for="save-info">
+                    工程对批准:
+                </label>
+                <InputCheckbox id="save-info" class="custom-control-input" @bind-Value="_starship.IsValidatedDesign" />
+            </div>
+
+ 
+
+            <div class="form-group">
+                <label class="control-label">
+                    Production Date:
+                    <InputDate class="form-control" @bind-Value="_starship.ProductionDate" />
+                </label>
+            </div>
+
+            <button type="submit">提交</button>
+
+            <div class="form-group">
+                <a href="http://www.startrek.com/">Star Trek</a>,
+                &copy;1966-2019 CBS Studios, Inc. and
+                <a href="https://www.paramount.com">Paramount Pictures</a>
+            </div>
+        </EditForm>
+
+        @code {
+            private Starship _starship = new Starship();
+
+        }
+    </div>
+</div>

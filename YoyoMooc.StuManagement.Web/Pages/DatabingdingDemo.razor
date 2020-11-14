@@ -1,0 +1,57 @@
+@page "/databingdingdemo"
+@inherits DatabingdingDemoBase
+
+
+<h1>模型绑定的一个Demo演示</h1>
+<h3>整个demo，没有一行js或者ts 的引入，所有事件的触发直接操作 元素 本身的所有事件。 </h3>
+<hr />
+
+<h3>单向数据绑定-展示</h3>
+<div>
+	<b>姓名：</b>@Name
+</div>
+<div>
+	<b>称呼:</b> @( Gender== "女" ? $"{Name},女士": $"{Name},先生")
+</div>
+<div>
+	<b>姓名：</b> <input type="text" value="@Name" placeholder="请输入姓名" />
+</div>
+
+<p>以上为单向数据流，文本框中的值无法改变已经存在的数据</p>
+
+<hr />
+
+<h3>双向数据绑定-展示</h3>
+
+<div>
+	<b>姓名：</b> <input type="text" value="@Name" @onchange="@(e=> { Name = e.Value.ToString(); })" placeholder="请输入姓名" />
+			   <p>通过监听事件onchange来实现双向绑定</p>
+</div>
+
+<div>
+	<b>姓名：</b> <input type="text" @bind="Name" />
+	<p>通过bind属性重写，来实现双向绑定</p>
+	<p>该变化事件的触发条件为，只有当输入元素失去焦点，只有当输入元素失去焦点时，才会触发变化事件，这时组件类中的属性会随着输入元素中的数据更新。</p>
+
+	 
+
+</div>
+<div>
+	<b>姓名：</b> <input type="text" @bind="Name" @bind:event="oninput" />
+ <p>双向数据绑定中指定事件名称来实现。
+ 为了指定事件名称，我们使用事件参数来指定事件名称</p>
+</div>
+
+
+
+
+
+<div>
+	<b>颜色：</b> <input type="text" @bind="Colour" />
+			   <p>修改文本框中的颜色值可以改变下面的值</p>
+
+</div>
+
+<div @bind-style="Colour" @bind-style:event="onchange" >	
+	<h4>这段文字的背景颜色会发生变化</h4>
+</div>

@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+    mssql:
+        image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/mssql:2019-latest
+        ports:
+            - 1438:1433
+        volumes:
+            - blazormssqlData:/var/opt/mssql/
+        networks:
+            - backend
+        environment:
+            - SA_PASSWORD=bb123456??
+            - ACCEPT_EULA=Y
+
+    webapi:
+        image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/blazorstumanagementapidemo:dev
+        ports:
+            - 3001:80
+        networks:
+            - backend
+        environment:
+            - WAITHOST=mssql
+            - WAITPORT=1433
+            - ConnectionStrings__DBConnection=Server=mssql;Database=StudentDb_Blazor;User Id=sa;Password=bb123456??
+            - INITDB=true
+        depends_on:
+            - mssql
+
+    blazor:
+        image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/blazorstumanagementwebdemo:dev
+        ports:
+            - 1805:80
+        networks:
+            - backend
+            - frontend
+        environment:
+            - WAITHOST=mssql
+            - WAITPORT=1433
+            - baseAddress=http://webapi/
+            - webAddress=http://blazor/
+            - ConnectionStrings__DBConnection=Server=mssql;Database=StudentDb_Blazor;User Id=sa;Password=bb123456??;
+            - DBHOST=mysql
+        depends_on:
+            - mssql
+            - webapi
+
+    loadbalancer:
+        image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/haproxy:1.6.7
+        ports:
+            - "5000:5000"
+            - "1936:1936"
+            - "3055:80"
+        environment:
+            - DNS_ENABLED=true
+            - LOG_LEVEL=info
+            - STATS_AUTH="admin:admin"
+            - STATS_PORT=1936
+        links:
+            - blazor
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - frontend
+
+volumes:
+    blazormssqlData:
+
+networks:
+    frontend:
+    backend:

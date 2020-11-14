@@ -1,0 +1,63 @@
+@page "/student/add/{id}"
+@page "/student/add"
+@inherits CreateOrEditStudentbase
+
+<h1>添加学生信息</h1>
+
+<hr />
+<div class="row">
+	<div class="col-md-6">
+
+		<EditForm Model="@Student"   OnValidSubmit="HandleValidSubmit">
+			<DataAnnotationsValidator />
+			<ValidationSummary />
+
+			<div class="form-group">
+				<label class="control-label">学生姓名</label>
+				<InputText class="form-control" @bind-Value="Student.StudentName" />
+			</div>
+
+
+			<div class="form-group">
+				<label class="control-label">邮箱</label>
+				<InputText class="form-control" @bind-Value="Student.Email" />
+			</div>
+
+
+			<div class="form-group">
+				<label class="control-label">出生日期</label>
+				<InputDate class="form-control" @bind-Value="Student.DateOfBrith" />
+			</div>
+
+
+			<div class="form-group">
+				<label class="control-label">入学时间</label>
+				<InputDate class="form-control" @bind-Value="Student.EnrollmentDate" />
+			</div>
+
+
+			<div class="form-group">
+
+				<label class="control-label">部门</label>
+
+
+				<select class="form-control" @bind="@Student.DepartmentId">
+					<option value="0">请选择部门 ...</option>
+					<option value="1">哪都通</option>
+					<option value="2">龙虎山天师府</option>
+					<option value="3">武侯奇门</option>
+					<option value="4">编辑室</option>
+				</select>
+
+
+			</div>
+
+		 
+
+
+
+
+			<button type="submit">提交</button>
+		</EditForm>
+	</div>
+</div>

@@ -1,0 +1,48 @@
+@page "/student/details/{id}"
+@page "/student/details"
+@inherits StudentDetailsBase
+
+
+@if (Student==null || Student.Department==null)
+{
+	<div class="spinner">	</div>
+
+
+
+}else{
+
+	<div class="row justify-content-center m-3">
+		<div class="col-sm-8">
+			<div class="card">
+				<div class="card-header">
+					<h1>@Student.StudentName  </h1>
+					<h3>获取鼠标移动坐标 : @Coordinates</h3>
+				</div>
+
+				<div class="card-body text-center">
+					@*<img class="card-img-top" src="@Student.PhotoPath" @onmousemove="@Mouse_Move"/>*@
+					<img class="card-img-top" src="@Student.PhotoPath" 					
+					@onmousemove="@(e=>Coordinates = $"X轴 = {e.ClientX } Y轴 = {e.ClientY}")"/>
+
+					<h4>学生 ID : @Student.StudentId</h4>
+					<h4>邮箱 : @Student.Email</h4>
+					<h4>部门 : @(Student.Department==null?"不详": Student.Department.DepartmentName) </h4>
+				
+		 <button class="btn btn-primary" @onclick="@Button_Click">@ButtonText</button>
+				
+				
+				
+				</div>
+				<div class="card-footer text-center @CssClass">
+					<a href="/" class="btn btn-primary">返回</a>
+					<a href="#" class="btn btn-primary">编辑</a>
+					<a href="#" class="btn btn-danger">删除</a>
+				</div>
+			 
+
+			</div>
+		</div>
+	</div>
+}
+
+
