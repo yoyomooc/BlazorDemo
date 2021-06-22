@@ -18,11 +18,10 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies 设置依赖
-      run: dotnet restore
+      run: dotnet restore 
     - name: Build 开始编译项目
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: publish 发布
+    - name: publish 发布到dist文件夹
       run: dotnet publish --configuration Release --output dist
-      working-directory: ./src
