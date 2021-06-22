@@ -37,6 +37,7 @@ jobs:
       - name: build-and-tag-image 编译镜像
         run: |
           IMAGE_ID=${{ env.REGISTRY }}/${{ github.repository }}
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # 从标签名称中去掉“v”前缀
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
