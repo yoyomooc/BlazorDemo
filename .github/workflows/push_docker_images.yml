@@ -30,8 +30,9 @@ jobs:
       - name: Checkout repository 仓库变量检查
         run: |
           echo ${{ github.actor }}
-          echo  ${{ github.repository }}/$IMAGE_NAME_API
+          echo ${{ github.repository }}/$IMAGE_NAME_API
           echo ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
+          echo ${{ secrets.AAA_22_DDD }}
 
       - name: build-and-tag-image 编译镜像、推送镜像
         run: |
@@ -45,9 +46,14 @@ jobs:
 
       - name: Push image 推送镜像
         run: |
+
+
           IMAGE_ID=${{ env.REGISTRY }}/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
           # 从标签名称中去掉“v”前缀
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           #使用Docker 'latest'标签的约定规则
