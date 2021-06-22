@@ -5,7 +5,7 @@
 # YoyoMooc.BlazorDemo
 
 大家好，我使用Blazor 做了一个Demo，
-
+build-and-push-image
 
 以下地址，作为临时访问地址，
 
