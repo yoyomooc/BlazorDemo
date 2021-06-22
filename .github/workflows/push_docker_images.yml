@@ -18,45 +18,63 @@ env:
   IMAGE_NAME_API: webapi
   IMAGE_NAME_APP: webapp
   REGISTRY: ghcr.io
+
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test:
+  build-image:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v2
-      - name: Checkout repository
+      - name: Checkout repository 仓库变量检查
         run: |
           echo ${{ github.actor }}
           echo  ${{ github.repository }}/$IMAGE_NAME_API
           echo ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
 
-      - name: Log in to the Container registry
+
+      - uses: actions/checkout@v2
+      - name: build-and-tag-image 编译镜像
+        run: | 
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # 从标签名称中去掉“v”前缀
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          #使用Docker 'latest'标签的约定规则
+          [ "$VERSION" == "master" ] && VERSION=latest
+          docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{ github.repository }}/${{ env.REGISTRY }}:$VERSION
+          docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{ github.repository }}/${{ env.REGISTRY }}:$VERSION
+
+  push-image:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+
+    steps:
+      - name: 登录到容器仓库中
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
 
-      - uses: actions/checkout@v2
-      - name: Tag image 重命名镜像
-        run: |
-          IMAGE_ID=yoyomooc.azurecr.io/$IMAGE_NAME
-          echo ${{ github.actor }}
-          echo  ${{ env.REGISTRY }}
-          echo ${{ github.repository }}
-          echo  ${{ env.IMAGE_NAME }}
-          echo ${{ secrets.GITHUB_TOKEN }}
 
-  build:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release'
-
-    steps:
       - uses: actions/checkout@v2
       - name: build_docker_webapi_images 编译webapi镜像
-        run: docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{ github.repository }}/$IMAGE_NAME_API
+        run: |
+
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+        
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+        docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{ github.repository }}/${{ env.REGISTRY }}
+        docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{ github.repository }}/${{ env.REGISTRY }}
       - name: build_docker_web_images 编译webapp镜像
         run: docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{ github.repository }}/$IMAGE_NAME_APP
 
