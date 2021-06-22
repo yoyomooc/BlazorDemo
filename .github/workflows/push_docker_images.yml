@@ -46,8 +46,8 @@ jobs:
       - name: Build image 创建镜像
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
-      - name: Log into registry 登录到注册表中
-        run: echo "${{ secrets.ACR_PRINCIPAL_PASSWORD }}" | docker login yoyomooc.azurecr.io -u ${{ secrets.TENANT }} --password-stdin
+      # - name: Log into registry 登录到注册表中
+      # run: echo "${{ secrets.ACR_PRINCIPAL_PASSWORD }}" | docker login yoyomooc.azurecr.io -u ${{ secrets.TENANT }} --password-stdin
 
       - name: Push image 推送镜像
         run: |
@@ -69,4 +69,3 @@ jobs:
           echo VERSION=$VERSION
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
