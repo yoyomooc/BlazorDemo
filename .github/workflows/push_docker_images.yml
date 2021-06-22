@@ -4,7 +4,7 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-      - master
+      - develop
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -15,62 +15,49 @@ on:
 
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: exampleapp
+  IMAGE_NAME_API: webapi
+  IMAGE_NAME_APP: webapp
+  REGISTRY: ghcr.io
 
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Run tests
-        run: |
-          if [ -f docker-compose.test.yml ]; then
-            docker-compose --file docker-compose.test.yml build
-            docker-compose --file docker-compose.test.yml run sut
-          else
-            docker build . --file Dockerfile
-          fi
-
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
-  push:
-    # Ensure test job passes before pushing image.
-    needs: test
-
+  build-and-push-image:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-
     steps:
       - uses: actions/checkout@v2
+      - name: Checkout repository 仓库变量检查
+        run: |
+          echo ${{ github.actor }}
+          echo  ${{ github.repository }}/$IMAGE_NAME_API
+          echo ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
 
-      - name: Build image 创建镜像
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+      - name: build-and-tag-image 编译镜像、推送镜像
+        run: |
+          echo 编译镜像api
+          docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{env.IMAGE_NAME_API}}
+          echo 编译镜像app
+          docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{env.IMAGE_NAME_APP}}
 
-      - name: Log into registry 登录到注册表中
-        run: echo "${{ secrets.ACR_PRINCIPAL_PASSWORD }}" | docker login yoyomooc.azurecr.io -u ${{ secrets.TENANT }} --password-stdin
+      - name: 登录到容器仓库中
+        run: echo "${{ secrets.PUSH_GITLAB_TO_GITHUB }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push image 推送镜像
         run: |
-          IMAGE_ID=yoyomooc.azurecr.io/$IMAGE_NAME
-
-          # Change all uppercase to lowercase
+          IMAGE_ID=${{ env.REGISTRY }}/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name
+          # 从标签名称中去掉“v”前缀
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
+          #使用Docker 'latest'标签的约定规则
           [ "$VERSION" == "master" ] && VERSION=latest
-
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+          echo 重命名APP为镜像APP=$IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
+          docker tag  ${{env.IMAGE_NAME_APP}} $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
+          echo 重命名API为镜像API=$IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
+          docker tag  ${{env.IMAGE_NAME_API}} $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
+          docker push $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
+          docker push $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
+          echo 推送完成，准备开始清理。
