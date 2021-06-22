@@ -31,6 +31,7 @@ namespace YoyoMooc.StuManagement.Api
 		{
 
 			services.AddDbContext<AppDbContext>(options =>
+
 		   options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
 			services.AddScoped<IDepartmentRepository, DepartmentRepository>();

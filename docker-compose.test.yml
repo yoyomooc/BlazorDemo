@@ -1,0 +1,42 @@
+version: "3"
+
+volumes:
+    blazormssqlData:
+
+services:
+    mssql:
+        image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/mssql:2019-latest
+        ports:
+            - 1433:1433
+        volumes:
+            - blazormssqlData:/var/opt/mssql/
+        environment:
+            - SA_PASSWORD=bb123456??
+            - ACCEPT_EULA=Y
+
+    webapi:
+        build:
+            - context: ./YoyoMooc.StuManagement.Api
+            - dockerfile: Dockerfile
+        environment:
+            - WAITHOST=mssql
+            - WAITPORT=1433
+            - ConnectionStrings__DBConnection=Server=mssql;Database=StudentDb_Blazor;User Id=sa;Password=bb123456??
+            - INITDB=true
+        depends_on:
+            - mssql
+
+    blazor:
+        build:
+            - context: ./YoyoMooc.StuManagement.Api
+            - dockerfile: Dockerfile
+        environment:
+            - WAITHOST=mssql
+            - WAITPORT=1433
+            - baseAddress=http://webapi/
+            - webAddress=http://blazor/
+            - ConnectionStrings__DBConnection=Server=mssql;Database=StudentDb_Blazor;User Id=sa;Password=bb123456??;
+            - DBHOST=mysql
+        depends_on:
+            - mssql
+            - webapi
