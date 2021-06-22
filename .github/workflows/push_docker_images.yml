@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
 
       - name: Push image 推送镜像
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         run: |
           IMAGE_ID=${{ env.REGISTRY }}/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
