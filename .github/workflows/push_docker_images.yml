@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image 创建镜像
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+        run: docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag webapi
 
       # - name: Log into registry 登录到注册表中
       # run: echo "${{ secrets.ACR_PRINCIPAL_PASSWORD }}" | docker login yoyomooc.azurecr.io -u ${{ secrets.TENANT }} --password-stdin
