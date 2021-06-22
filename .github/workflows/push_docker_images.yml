@@ -20,8 +20,22 @@ env:
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Tag image 重命名镜像
+        run: |
+          IMAGE_ID=yoyomooc.azurecr.io/$IMAGE_NAME
+          echo ${{ github.actor }}
+          echo  ${{ steps.meta.outputs.tags }}
+          echo  ${{ steps.meta.outputs.labels  }}
+          echo ${{ secrets.GITHUB_TOKEN }}
+
   build:
     runs-on: ubuntu-latest
+    if: github.event_name == 'release'
 
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +51,7 @@ jobs:
     needs: build
 
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'release'
 
     steps:
       - uses: actions/checkout@v2
