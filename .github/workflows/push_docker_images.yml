@@ -29,8 +29,9 @@ jobs:
         run: |
           IMAGE_ID=yoyomooc.azurecr.io/$IMAGE_NAME
           echo ${{ github.actor }}
-          echo  ${{ steps.meta.outputs.tags }}
-          echo  ${{ steps.meta.outputs.labels  }}
+          echo  ${{ env.REGISTRY }}
+          echo ${{ github.repository }}
+          echo  ${{ env.IMAGE_NAME }}
           echo ${{ secrets.GITHUB_TOKEN }}
 
   build:
