@@ -25,10 +25,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: build_docker_webapi_images
+      - name: build_docker_webapi_images 编译webapi镜像
         run: docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag webapi
-      - name: build_docker_web_images
+      - name: build_docker_web_images 编译webapp镜像
         run: docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag webapp
 
   # Push image to GitHub Packages.
@@ -43,8 +42,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build image 创建镜像
-        run: docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag webapi
+      - name: Tag image 重命名镜像
+        run: |
+          IMAGE_ID=yoyomooc.azurecr.io/$IMAGE_NAME
+          echo ${{ github.actor }}
+          echo  ${{ steps.meta.outputs.tags }}
+          echo  ${{ steps.meta.outputs.labels  }}
+          echo ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Log into registry 登录到注册表中
       # run: echo "${{ secrets.ACR_PRINCIPAL_PASSWORD }}" | docker login yoyomooc.azurecr.io -u ${{ secrets.TENANT }} --password-stdin
