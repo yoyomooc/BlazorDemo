@@ -17,7 +17,7 @@ env:
   # TODO: Change variable to your image's name.
   IMAGE_NAME_API: webapi
   IMAGE_NAME_APP: webapp
-
+  REGISTRY: ghcr.io
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
