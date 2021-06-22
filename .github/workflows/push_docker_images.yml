@@ -18,7 +18,7 @@ env:
   IMAGE_NAME_API: webapi
   IMAGE_NAME_APP: webapp
   REGISTRY: ghcr.io
-  IMAGE_ID: ${{ env.REGISTRY }}/${{ github.repository }}
+
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -36,6 +36,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: build-and-tag-image 编译镜像
         run: |
+          IMAGE_ID: ${{ env.REGISTRY }}/${{ github.repository }}
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # 从标签名称中去掉“v”前缀
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
