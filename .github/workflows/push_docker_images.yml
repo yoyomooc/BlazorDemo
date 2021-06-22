@@ -54,9 +54,9 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-          echo 重命名APP为镜像APP
+          echo 重命名APP为镜像APP=$IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
           docker tag  ${{env.IMAGE_NAME_APP}} $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
-          echo 重命名API为镜像API
+          echo 重命名API为镜像API=$IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
           docker tag  ${{env.IMAGE_NAME_API}} $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
           docker push $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
           docker push $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
