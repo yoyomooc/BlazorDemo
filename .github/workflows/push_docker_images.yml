@@ -18,7 +18,7 @@ env:
   IMAGE_NAME_API: webapi
   IMAGE_NAME_APP: webapp
   REGISTRY: ghcr.io
-
+  IMAGE_ID: ${{ env.REGISTRY }}/${{ github.repository }}
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -41,8 +41,8 @@ jobs:
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           #使用Docker 'latest'标签的约定规则
           [ "$VERSION" == "master" ] && VERSION=latest
-          docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{ github.repository }}/${{ env.REGISTRY }}:$VERSION
-          docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{ github.repository }}/${{ env.REGISTRY }}:$VERSION
+          docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{env.IMAGE_ID}}/${{env.IMAGE_NAME_API}}:$VERSION
+          docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{env.IMAGE_ID}}/${{env.IMAGE_NAME_APP}}:$VERSION
 
   push-image:
     needs: build-image
