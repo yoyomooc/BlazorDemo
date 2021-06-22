@@ -60,3 +60,4 @@ jobs:
           docker tag  ${{env.IMAGE_NAME_API}} $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
           docker push $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
           docker push $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
+          echo 推送完成，准备开始清理。
