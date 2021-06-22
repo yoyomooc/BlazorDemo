@@ -33,8 +33,28 @@ jobs:
           echo  ${{ github.repository }}/$IMAGE_NAME_API
           echo ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
 
-      - uses: actions/checkout@v2
-      - name: build-and-tag-push-image 编译镜像、推送镜像
+      - name: build-and-tag-image 编译镜像、推送镜像
+        run: |
+          echo 编译镜像api
+          docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{env.IMAGE_NAME_API}}
+          echo 编译镜像app
+          docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{env.IMAGE_NAME_APP}}
+
+  push-image:
+    needs: build-image
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: 登录到容器仓库中
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
+
+      - name: Push image 推送镜像
+        uses: actions/checkout@v2
         run: |
           IMAGE_ID=${{ env.REGISTRY }}/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -43,11 +63,11 @@ jobs:
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           #使用Docker 'latest'标签的约定规则
           [ "$VERSION" == "master" ] && VERSION=latest
-          docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
-          echo 推送API镜像
-
-          docker push  $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
-
-          docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
-           echo 推送app镜像
-          docker push  $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo 重命名APP为镜像APP
+          docker tag  ${{env.IMAGE_NAME_APP}} $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
+          echo 重命名API为镜像API
+          docker tag  ${{env.IMAGE_NAME_API}} $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
+          docker push $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
+          docker push $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
