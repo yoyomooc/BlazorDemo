@@ -12,7 +12,7 @@ services:
             - ACCEPT_EULA=Y
 
     webapi:
-        image: ghcr.io/yoyomooc/blazordemo/webapi:develop
+        image: ghcr.io/yoyomooc/blazordemo/webapi:latest
         ports:
             - 3001:80
         networks:
@@ -26,7 +26,7 @@ services:
             - mssql
 
     blazor:
-        image: ghcr.io/yoyomooc/blazordemo/webapp:develop
+        image: ghcr.io/yoyomooc/blazordemo/webapp:latest
         ports:
             - 3002:80
         networks:
