@@ -27,9 +27,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: build_docker_webapi_images
-        run: docker build . -t $IMAGE_NAME_webapi -f .\YoyoMooc.StuManagement.Api\Dockerfile
+        run: docker build . -t $IMAGE_NAME_webapi --file .\YoyoMooc.StuManagement.Api\Dockerfile
       - name: build_docker_web_images
-        run: docker build . -t $IMAGE_NAME_web -f .\YoyoMooc.StuManagement.Web\Dockerfile
+        run: docker build . -t $IMAGE_NAME_web --file .\YoyoMooc.StuManagement.Web\Dockerfile
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
