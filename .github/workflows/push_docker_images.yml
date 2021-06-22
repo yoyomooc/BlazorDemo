@@ -34,7 +34,7 @@ jobs:
           echo ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
 
       - uses: actions/checkout@v2
-      - name: build-and-tag-image 编译镜像
+      - name: build-and-tag-push-image 编译镜像、推送镜像
         run: |
           IMAGE_ID=${{ env.REGISTRY }}/${{ github.repository }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -44,24 +44,10 @@ jobs:
           #使用Docker 'latest'标签的约定规则
           [ "$VERSION" == "master" ] && VERSION=latest
           docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
+          echo 推送API镜像
+
+          docker push  $IMAGE_ID/${{env.IMAGE_NAME_API}}:$VERSION
+
           docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
-
-  push-image:
-    needs: build-image
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-
-    steps:
-      - name: 登录到容器仓库中
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.PUSH_GITLAB_TO_GITHUB }}
-      - name: Push image 推送镜像
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+           echo 推送app镜像
+          docker push  $IMAGE_ID/${{env.IMAGE_NAME_APP}}:$VERSION
