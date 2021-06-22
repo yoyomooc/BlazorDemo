@@ -25,8 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
+      - uses: actions/checkout@v2
       - name: Checkout repository
-        uses: actions/checkout@v2
         run: |
           echo ${{ github.actor }}
           echo  ${{ github.repository }}/$IMAGE_NAME_API
