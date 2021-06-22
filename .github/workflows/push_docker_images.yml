@@ -4,7 +4,7 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-      - master
+      - develop
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -15,31 +15,27 @@ on:
 
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: exampleapp
+  IMAGE_NAME: blazorexampleapp
 
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run tests
-        run: |
-          if [ -f docker-compose.test.yml ]; then
-            docker-compose --file docker-compose.test.yml build
-            docker-compose --file docker-compose.test.yml run sut
-          else
-            docker build . --file Dockerfile
-          fi
+      - name: build_docker_webapi_images
+        run: docker build . -t $IMAGE_NAME_webapi -f .\YoyoMooc.StuManagement.Api\Dockerfile
+      - name: build_docker_web_images
+        run: docker build . -t $IMAGE_NAME_web -f .\YoyoMooc.StuManagement.Web\Dockerfile
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
     # Ensure test job passes before pushing image.
-    needs: test
+    needs: build
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
