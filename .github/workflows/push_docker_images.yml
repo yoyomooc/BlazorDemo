@@ -22,7 +22,7 @@ env:
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  build-image:
+  build-and-push-image:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
@@ -39,15 +39,6 @@ jobs:
           docker build .  --file ./YoyoMooc.StuManagement.Api/Dockerfile --tag ${{env.IMAGE_NAME_API}}
           echo 编译镜像app
           docker build .  --file ./YoyoMooc.StuManagement.Web/Dockerfile --tag ${{env.IMAGE_NAME_APP}}
-
-  push-image:
-    needs: build-image
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
 
       - name: 登录到容器仓库中
         run: echo "${{ secrets.PUSH_GITLAB_TO_GITHUB }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
