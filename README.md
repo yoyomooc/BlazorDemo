@@ -4,9 +4,9 @@
 
 # YoyoMooc.BlazorDemo
 
-大家好，我使用Blazor 做了一个Demo，
+大家好，我使用Blazor 做了一个Demo  .
 
-
+调整内容。
 
   
 网站Demo采用Blazor 开发完成,整个网站没有包含一行javascript和ts文件
